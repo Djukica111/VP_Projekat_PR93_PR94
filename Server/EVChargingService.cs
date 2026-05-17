@@ -14,9 +14,12 @@ namespace Server
         private Dictionary<string, int> _brojacRedova
             = new Dictionary<string, int>();
 
+<<<<<<< HEAD
         public TransferEventPublisher Publisher { get; private set; }
             = new TransferEventPublisher();
 
+=======
+>>>>>>> fdc5ac41aaaf13c8ca04a043eeadac9f9bbd4c97
         private string GetSessionPath(string vehicleId)
         {
             string datum = DateTime.Now.ToString("yyyy-MM-dd");
@@ -55,7 +58,14 @@ namespace Server
             _aktivneSesije[vehicleId] = sesija;
             _brojacRedova[vehicleId] = 0;
 
+<<<<<<< HEAD
             Publisher.GeneriširTransferStarted(vehicleId);
+=======
+            Console.WriteLine($"[SERVER] ====================================");
+            Console.WriteLine($"[SERVER] Sesija zapoceta za vozilo: {vehicleId}");
+            Console.WriteLine($"[SERVER] Fajl: {sessionPath}");
+            Console.WriteLine($"[SERVER] ====================================");
+>>>>>>> fdc5ac41aaaf13c8ca04a043eeadac9f9bbd4c97
         }
 
         public void PushSample(ChargingSample sample)
@@ -78,8 +88,15 @@ namespace Server
                 _brojacRedova[sample.VehicleId]++;
             }
 
+<<<<<<< HEAD
             Publisher.GeneriširSampleReceived(
                 sample.VehicleId, sample.RowIndex, _brojacRedova[sample.VehicleId]);
+=======
+            Console.WriteLine($"[SERVER] Prenos u toku... " +
+                $"Red {sample.RowIndex} | " +
+                $"Vozilo: {sample.VehicleId} | " +
+                $"Primljeno ukupno: {_brojacRedova[sample.VehicleId]}");
+>>>>>>> fdc5ac41aaaf13c8ca04a043eeadac9f9bbd4c97
         }
 
         public void EndSession(string vehicleId)
@@ -99,7 +116,14 @@ namespace Server
             if (_brojacRedova.ContainsKey(vehicleId))
                 _brojacRedova.Remove(vehicleId);
 
+<<<<<<< HEAD
             Publisher.GeneriširTransferCompleted(vehicleId, ukupno);
+=======
+            Console.WriteLine($"[SERVER] ====================================");
+            Console.WriteLine($"[SERVER] Prenos zavrsen za vozilo: {vehicleId}");
+            Console.WriteLine($"[SERVER] Ukupno primljenih redova: {ukupno}");
+            Console.WriteLine($"[SERVER] ====================================");
+>>>>>>> fdc5ac41aaaf13c8ca04a043eeadac9f9bbd4c97
         }
 
         private void ValidateSample(ChargingSample sample)
