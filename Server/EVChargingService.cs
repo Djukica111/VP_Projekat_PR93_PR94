@@ -1,14 +1,22 @@
-﻿using System;
+﻿using Common;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.ServiceModel;
-using Common;
 
 namespace Server
 {
     public class EVChargingService : IEVChargingService
     {
+        private Dictionary<string, SessionResource> _aktivneSesije
+            = new Dictionary<string, SessionResource>();
+
         public void StartSession(string vehicleId)
         {
             Console.WriteLine($"[SERVER] Sesija zapoceta za vozilo: {vehicleId}");
+            
+            string filePath = Path.GetTempPath();
+            _aktivneSesije[vehicleId] = new SessionResource(filePath, vehicleId);
         }
 
         public void PushSample(ChargingSample sample)
@@ -19,7 +27,14 @@ namespace Server
 
         public void EndSession(string vehicleId)
         {
-            Console.WriteLine($"[SERVER] Sesija zavrsena za vozilo: {vehicleId}");
+            if (_aktivneSesije.ContainsKey(vehicleId))
+            {
+                using (SessionResource sesija = _aktivneSesije[vehicleId])
+                {
+                    Console.WriteLine($"[SERVER] Sesija zavrsena za vozilo: {vehicleId}");
+                }
+                _aktivneSesije.Remove(vehicleId);
+            }
             Console.WriteLine($"[SERVER] Prenos zavrsen.");
         }
 

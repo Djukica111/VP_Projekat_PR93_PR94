@@ -46,6 +46,7 @@
     <Compile Include="ChargingSample.cs" />
     <Compile Include="IEVChargingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionResource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
