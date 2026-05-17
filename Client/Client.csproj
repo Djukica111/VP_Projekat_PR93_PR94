@@ -50,6 +50,114 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Data\BMW iX xDrive50\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\BMW iX xDrive50\Waveforms\Waveform_1.csv" />
+    <None Include="Data\BMW iX xDrive50\Waveforms\Waveform_2.csv" />
+    <None Include="Data\BMW iX xDrive50\Waveforms\Waveform_3.csv" />
+    <Content Include="Data\Ford Mustang\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_6.csv" />
+    <Content Include="Data\Hyundai Ioniq 5\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Hyundai Ioniq 5\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Hyundai Ioniq 5\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Hyundai Ioniq 5\Waveforms\Waveform_3.csv" />
+    <Content Include="Data\Hyundai Ioniq Electric\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Hyundai Ioniq Electric\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Hyundai Ioniq Electric\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Hyundai Ioniq Electric\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Hyundai Ioniq Electric\Waveforms\Waveform_4.csv" />
+    <Content Include="Data\Kia Nero\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Kia Nero\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Kia Nero\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Kia Nero\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Kia Nero\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Kia Nero\Waveforms\Waveform_5.csv" />
+    <Content Include="Data\Lexus\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Lexus\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_6.csv" />
+    <Content Include="Data\Mitsubishi Outlander\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_7.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_8.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_9.csv" />
+    <Content Include="Data\Nissan Leaf\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_7.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_8.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_9.csv" />
+    <Content Include="Data\Tesla Model 3\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_5.csv" />
+    <Content Include="Data\Tesla Model Y\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_7.csv" />
+    <Content Include="Data\Toyota Prius Prime 2021\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_7.csv" />
+    <Content Include="Data\Volvo XC 40\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_7.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_8.csv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

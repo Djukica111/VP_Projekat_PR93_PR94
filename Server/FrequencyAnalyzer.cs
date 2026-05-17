@@ -6,8 +6,8 @@ namespace Server
 {
     public class FrequencyAnalyzer
     {
-        private const double NOMINALNA_FREKVENCIJA = 50.0;
-        private const double DOZVOLJENO_ODSTUPANJE = 0.6;
+        private const double NOMINALNA_FREKVENCIJA = 60.0;
+        private const double DOZVOLJENO_ODSTUPANJE = 0.01;
 
         private double _prethodniFreqMin = -1;
         private double _prethodniFreqMax = -1;
