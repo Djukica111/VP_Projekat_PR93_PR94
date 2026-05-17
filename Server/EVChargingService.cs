@@ -11,6 +11,9 @@ namespace Server
         private Dictionary<string, SessionResource> _aktivneSesije
             = new Dictionary<string, SessionResource>();
 
+        private Dictionary<string, int> _brojacRedova
+            = new Dictionary<string, int>();
+
         private string GetSessionPath(string vehicleId)
         {
             string datum = DateTime.Now.ToString("yyyy-MM-dd");
@@ -32,12 +35,9 @@ namespace Server
 
         public void StartSession(string vehicleId)
         {
-            Console.WriteLine($"[SERVER] Sesija zapoceta za vozilo: {vehicleId}");
-
             string sessionPath = GetSessionPath(vehicleId);
             SessionResource sesija = new SessionResource(sessionPath, vehicleId);
 
-            // Upiši zaglavlje ako je fajl nov
             if (new FileInfo(sessionPath).Length == 0)
             {
                 sesija.WriteLine(
@@ -50,7 +50,12 @@ namespace Server
             }
 
             _aktivneSesije[vehicleId] = sesija;
-            Console.WriteLine($"[SERVER] Fajl kreiran: {sessionPath}");
+            _brojacRedova[vehicleId] = 0;
+
+            Console.WriteLine($"[SERVER] ====================================");
+            Console.WriteLine($"[SERVER] Sesija zapoceta za vozilo: {vehicleId}");
+            Console.WriteLine($"[SERVER] Fajl: {sessionPath}");
+            Console.WriteLine($"[SERVER] ====================================");
         }
 
         public void PushSample(ChargingSample sample)
@@ -69,24 +74,37 @@ namespace Server
                     $"{sample.ApparentPowerMin},{sample.ApparentPowerAvg},{sample.ApparentPowerMax}," +
                     $"{sample.FrequencyMin},{sample.FrequencyAvg},{sample.FrequencyMax}," +
                     $"{sample.RowIndex}");
+
+                _brojacRedova[sample.VehicleId]++;
             }
 
-            Console.WriteLine($"[SERVER] Primljen red {sample.RowIndex} " +
-                $"za vozilo {sample.VehicleId} - prenos u toku...");
+            Console.WriteLine($"[SERVER] Prenos u toku... " +
+                $"Red {sample.RowIndex} | " +
+                $"Vozilo: {sample.VehicleId} | " +
+                $"Primljeno ukupno: {_brojacRedova[sample.VehicleId]}");
         }
 
         public void EndSession(string vehicleId)
         {
+            int ukupno = _brojacRedova.ContainsKey(vehicleId)
+                ? _brojacRedova[vehicleId] : 0;
+
             if (_aktivneSesije.ContainsKey(vehicleId))
             {
                 using (SessionResource sesija = _aktivneSesije[vehicleId])
                 {
-                    Console.WriteLine($"[SERVER] Zatvaranje sesije za vozilo: {vehicleId}");
+                    Console.WriteLine($"[SERVER] Zatvaranje sesije...");
                 }
                 _aktivneSesije.Remove(vehicleId);
             }
 
+            if (_brojacRedova.ContainsKey(vehicleId))
+                _brojacRedova.Remove(vehicleId);
+
+            Console.WriteLine($"[SERVER] ====================================");
             Console.WriteLine($"[SERVER] Prenos zavrsen za vozilo: {vehicleId}");
+            Console.WriteLine($"[SERVER] Ukupno primljenih redova: {ukupno}");
+            Console.WriteLine($"[SERVER] ====================================");
         }
 
         private void ValidateSample(ChargingSample sample)
