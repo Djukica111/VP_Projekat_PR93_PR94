@@ -14,12 +14,12 @@ namespace Server
         private Dictionary<string, int> _brojacRedova
             = new Dictionary<string, int>();
 
-<<<<<<< HEAD
+        private Dictionary<string, EnergyAnalyzer> _energyAnalyzeri
+            = new Dictionary<string, EnergyAnalyzer>();
+
         public TransferEventPublisher Publisher { get; private set; }
             = new TransferEventPublisher();
 
-=======
->>>>>>> fdc5ac41aaaf13c8ca04a043eeadac9f9bbd4c97
         private string GetSessionPath(string vehicleId)
         {
             string datum = DateTime.Now.ToString("yyyy-MM-dd");
@@ -57,15 +57,9 @@ namespace Server
 
             _aktivneSesije[vehicleId] = sesija;
             _brojacRedova[vehicleId] = 0;
+            _energyAnalyzeri[vehicleId] = new EnergyAnalyzer(Publisher);
 
-<<<<<<< HEAD
             Publisher.GeneriširTransferStarted(vehicleId);
-=======
-            Console.WriteLine($"[SERVER] ====================================");
-            Console.WriteLine($"[SERVER] Sesija zapoceta za vozilo: {vehicleId}");
-            Console.WriteLine($"[SERVER] Fajl: {sessionPath}");
-            Console.WriteLine($"[SERVER] ====================================");
->>>>>>> fdc5ac41aaaf13c8ca04a043eeadac9f9bbd4c97
         }
 
         public void PushSample(ChargingSample sample)
@@ -88,15 +82,13 @@ namespace Server
                 _brojacRedova[sample.VehicleId]++;
             }
 
-<<<<<<< HEAD
+            if (_energyAnalyzeri.ContainsKey(sample.VehicleId))
+                _energyAnalyzeri[sample.VehicleId].AnalizirajUzorak(sample);
+
             Publisher.GeneriširSampleReceived(
-                sample.VehicleId, sample.RowIndex, _brojacRedova[sample.VehicleId]);
-=======
-            Console.WriteLine($"[SERVER] Prenos u toku... " +
-                $"Red {sample.RowIndex} | " +
-                $"Vozilo: {sample.VehicleId} | " +
-                $"Primljeno ukupno: {_brojacRedova[sample.VehicleId]}");
->>>>>>> fdc5ac41aaaf13c8ca04a043eeadac9f9bbd4c97
+                sample.VehicleId,
+                sample.RowIndex,
+                _brojacRedova[sample.VehicleId]);
         }
 
         public void EndSession(string vehicleId)
@@ -116,14 +108,13 @@ namespace Server
             if (_brojacRedova.ContainsKey(vehicleId))
                 _brojacRedova.Remove(vehicleId);
 
-<<<<<<< HEAD
+            if (_energyAnalyzeri.ContainsKey(vehicleId))
+            {
+                _energyAnalyzeri[vehicleId].ResetujStanje();
+                _energyAnalyzeri.Remove(vehicleId);
+            }
+
             Publisher.GeneriširTransferCompleted(vehicleId, ukupno);
-=======
-            Console.WriteLine($"[SERVER] ====================================");
-            Console.WriteLine($"[SERVER] Prenos zavrsen za vozilo: {vehicleId}");
-            Console.WriteLine($"[SERVER] Ukupno primljenih redova: {ukupno}");
-            Console.WriteLine($"[SERVER] ====================================");
->>>>>>> fdc5ac41aaaf13c8ca04a043eeadac9f9bbd4c97
         }
 
         private void ValidateSample(ChargingSample sample)
