@@ -20,6 +20,7 @@ namespace Server
         {
             Publisher = publisher;
 
+            // Ucitaj prag iz konfiguracije
             string vrednost = ConfigurationManager.AppSettings["OverloadWarningThreshold"];
             if (!double.TryParse(vrednost, out _overloadPrag))
                 _overloadPrag = 50000;
@@ -27,8 +28,10 @@ namespace Server
 
         public void AnalizirajUzorak(ChargingSample sample)
         {
+            // Kumulativna energija — aproksimacija integracijom
             _kumulativnaEnergija += sample.RealPowerAvg;
 
+            // Provjeri stagnaciju
             double rast = _kumulativnaEnergija - _prethodnaKumulativna;
 
             if (rast < MINIMALNI_RAST)
@@ -53,6 +56,7 @@ namespace Server
 
             _prethodnaKumulativna = _kumulativnaEnergija;
 
+            // Provjeri preopterecenje
             if (sample.RealPowerMax > _overloadPrag)
             {
                 Publisher.RaiseWarning(

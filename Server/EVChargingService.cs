@@ -6,6 +6,7 @@ using Common;
 
 namespace Server
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class EVChargingService : IEVChargingService
     {
         private Dictionary<string, SessionResource> _aktivneSesije
@@ -16,6 +17,9 @@ namespace Server
 
         private Dictionary<string, EnergyAnalyzer> _energyAnalyzeri
             = new Dictionary<string, EnergyAnalyzer>();
+
+        private Dictionary<string, FrequencyAnalyzer> _frequencyAnalyzeri
+            = new Dictionary<string, FrequencyAnalyzer>();
 
         public TransferEventPublisher Publisher { get; private set; }
             = new TransferEventPublisher();
@@ -58,8 +62,9 @@ namespace Server
             _aktivneSesije[vehicleId] = sesija;
             _brojacRedova[vehicleId] = 0;
             _energyAnalyzeri[vehicleId] = new EnergyAnalyzer(Publisher);
+            _frequencyAnalyzeri[vehicleId] = new FrequencyAnalyzer(Publisher);
 
-            Publisher.GeneriširTransferStarted(vehicleId);
+            Publisher.RaiseTransferStarted(vehicleId);
         }
 
         public void PushSample(ChargingSample sample)
@@ -82,10 +87,14 @@ namespace Server
                 _brojacRedova[sample.VehicleId]++;
             }
 
+            // Pokreni analitiku
             if (_energyAnalyzeri.ContainsKey(sample.VehicleId))
                 _energyAnalyzeri[sample.VehicleId].AnalizirajUzorak(sample);
 
-            Publisher.GeneriširSampleReceived(
+            if (_frequencyAnalyzeri.ContainsKey(sample.VehicleId))
+                _frequencyAnalyzeri[sample.VehicleId].AnalizirajUzorak(sample);
+
+            Publisher.RaiseSampleReceived(
                 sample.VehicleId,
                 sample.RowIndex,
                 _brojacRedova[sample.VehicleId]);
@@ -114,14 +123,20 @@ namespace Server
                 _energyAnalyzeri.Remove(vehicleId);
             }
 
-            Publisher.GeneriširTransferCompleted(vehicleId, ukupno);
+            if (_frequencyAnalyzeri.ContainsKey(vehicleId))
+            {
+                _frequencyAnalyzeri[vehicleId].ResetujStanje();
+                _frequencyAnalyzeri.Remove(vehicleId);
+            }
+
+            Publisher.RaiseTransferCompleted(vehicleId, ukupno);
         }
 
         private void ValidateSample(ChargingSample sample)
         {
             if (string.IsNullOrEmpty(sample.Timestamp))
             {
-                ZabeležiOdbijen(sample, "Timestamp je prazan");
+                LogRejected(sample, "Timestamp je prazan");
                 throw new FaultException<string>(
                     "Neispravan red: Timestamp je prazan.",
                     new FaultReason("Validacija nije prosla"));
@@ -129,7 +144,7 @@ namespace Server
 
             if (sample.VoltageAvg <= 0)
             {
-                ZabeležiOdbijen(sample, "Napon mora biti veci od 0");
+                LogRejected(sample, "Napon mora biti veci od 0");
                 throw new FaultException<string>(
                     $"Neispravan red {sample.RowIndex}: Napon mora biti veci od 0.",
                     new FaultReason("Validacija nije prosla"));
@@ -137,14 +152,14 @@ namespace Server
 
             if (sample.FrequencyAvg <= 0)
             {
-                ZabeležiOdbijen(sample, "Frekvencija mora biti veca od 0");
+                LogRejected(sample, "Frekvencija mora biti veca od 0");
                 throw new FaultException<string>(
                     $"Neispravan red {sample.RowIndex}: Frekvencija mora biti veca od 0.",
                     new FaultReason("Validacija nije prosla"));
             }
         }
 
-        private void ZabeležiOdbijen(ChargingSample sample, string razlog)
+        private void LogRejected(ChargingSample sample, string razlog)
         {
             string rejectsPath = GetRejectsPath(sample.VehicleId);
 
@@ -153,7 +168,8 @@ namespace Server
                 if (new FileInfo(rejectsPath).Length == 0)
                     writer.WriteLine("RowIndex,Timestamp,Razlog");
 
-                writer.WriteLine($"{sample.RowIndex},{sample.Timestamp},{razlog}");
+                writer.WriteLine(
+                    $"{sample.RowIndex},{sample.Timestamp},{razlog}");
             }
 
             Console.WriteLine($"[SERVER] Red {sample.RowIndex} odbijen: {razlog}");

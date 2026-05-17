@@ -27,22 +27,22 @@ namespace Server
 
         public void AnalizirajUzorak(ChargingSample sample)
         {
-            ProveriOdstupanje(sample);
-            ProveriNagliSkok(sample);
+            CheckDeviation(sample);
+            CheckSpike(sample);
 
             // Zapamti vrednosti za sledeci red
             _prethodniFreqMin = sample.FrequencyMin;
             _prethodniFreqMax = sample.FrequencyMax;
         }
 
-        private void ProveriOdstupanje(ChargingSample sample)
+        private void CheckDeviation(ChargingSample sample)
         {
             double odstupanje = Math.Abs(
                 sample.FrequencyAvg - NOMINALNA_FREKVENCIJA);
 
             if (odstupanje > DOZVOLJENO_ODSTUPANJE)
             {
-                Publisher.GeneriširWarning(
+                Publisher.RaiseWarning(
                     sample.VehicleId,
                     sample.RowIndex,
                     "FrequencyDeviationWarning",
@@ -54,7 +54,7 @@ namespace Server
             }
         }
 
-        private void ProveriNagliSkok(ChargingSample sample)
+        private void CheckSpike(ChargingSample sample)
         {
             // Preskoci prvi red jer nema prethodnih vrednosti
             if (_prethodniFreqMin < 0 || _prethodniFreqMax < 0)
@@ -65,7 +65,7 @@ namespace Server
 
             if (deltaMin > _spikePrag)
             {
-                Publisher.GeneriširWarning(
+                Publisher.RaiseWarning(
                     sample.VehicleId,
                     sample.RowIndex,
                     "FrequencySpike",
@@ -78,7 +78,7 @@ namespace Server
 
             if (deltaMax > _spikePrag)
             {
-                Publisher.GeneriširWarning(
+                Publisher.RaiseWarning(
                     sample.VehicleId,
                     sample.RowIndex,
                     "FrequencySpike",

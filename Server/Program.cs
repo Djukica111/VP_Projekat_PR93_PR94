@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ServiceModel;
-using Common;
 
 namespace Server
 {
@@ -8,13 +7,12 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            ServiceHost host = new ServiceHost(typeof(EVChargingService));
-            host.Open();
-
-            // Dohvati instancu servisa i pretplati subscriber na dogadjaje
             EVChargingService servis = new EVChargingService();
             TransferEventSubscriber subscriber =
                 new TransferEventSubscriber(servis.Publisher);
+
+            ServiceHost host = new ServiceHost(servis);
+            host.Open();
 
             Console.WriteLine("[SERVER] Servis je pokrenut. Cekam klijente...");
             Console.WriteLine("[SERVER] Pritisni Enter za gasenje.");
