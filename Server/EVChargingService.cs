@@ -1,8 +1,8 @@
-﻿using Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
+using Common;
 
 namespace Server
 {
@@ -11,18 +11,68 @@ namespace Server
         private Dictionary<string, SessionResource> _aktivneSesije
             = new Dictionary<string, SessionResource>();
 
+        private string GetSessionPath(string vehicleId)
+        {
+            string datum = DateTime.Now.ToString("yyyy-MM-dd");
+            string folder = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "Data", vehicleId, datum);
+            Directory.CreateDirectory(folder);
+            return Path.Combine(folder, "session.csv");
+        }
+
+        private string GetRejectsPath(string vehicleId)
+        {
+            string datum = DateTime.Now.ToString("yyyy-MM-dd");
+            string folder = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "Data", vehicleId, datum);
+            return Path.Combine(folder, "rejects.csv");
+        }
+
         public void StartSession(string vehicleId)
         {
             Console.WriteLine($"[SERVER] Sesija zapoceta za vozilo: {vehicleId}");
-            
-            string filePath = Path.GetTempPath();
-            _aktivneSesije[vehicleId] = new SessionResource(filePath, vehicleId);
+
+            string sessionPath = GetSessionPath(vehicleId);
+            SessionResource sesija = new SessionResource(sessionPath, vehicleId);
+
+            // Upiši zaglavlje ako je fajl nov
+            if (new FileInfo(sessionPath).Length == 0)
+            {
+                sesija.WriteLine(
+                    "Timestamp,VoltageMin,VoltageAvg,VoltageMax," +
+                    "CurrentMin,CurrentAvg,CurrentMax," +
+                    "RealPowerMin,RealPowerAvg,RealPowerMax," +
+                    "ReactivePowerMin,ReactivePowerAvg,ReactivePowerMax," +
+                    "ApparentPowerMin,ApparentPowerAvg,ApparentPowerMax," +
+                    "FrequencyMin,FrequencyAvg,FrequencyMax,RowIndex");
+            }
+
+            _aktivneSesije[vehicleId] = sesija;
+            Console.WriteLine($"[SERVER] Fajl kreiran: {sessionPath}");
         }
 
         public void PushSample(ChargingSample sample)
         {
             ValidateSample(sample);
-            Console.WriteLine($"[SERVER] Primljen red {sample.RowIndex} za vozilo {sample.VehicleId} - prenos u toku...");
+
+            if (_aktivneSesije.ContainsKey(sample.VehicleId))
+            {
+                SessionResource sesija = _aktivneSesije[sample.VehicleId];
+                sesija.WriteLine(
+                    $"{sample.Timestamp}," +
+                    $"{sample.VoltageMin},{sample.VoltageAvg},{sample.VoltageMax}," +
+                    $"{sample.CurrentMin},{sample.CurrentAvg},{sample.CurrentMax}," +
+                    $"{sample.RealPowerMin},{sample.RealPowerAvg},{sample.RealPowerMax}," +
+                    $"{sample.ReactivePowerMin},{sample.ReactivePowerAvg},{sample.ReactivePowerMax}," +
+                    $"{sample.ApparentPowerMin},{sample.ApparentPowerAvg},{sample.ApparentPowerMax}," +
+                    $"{sample.FrequencyMin},{sample.FrequencyAvg},{sample.FrequencyMax}," +
+                    $"{sample.RowIndex}");
+            }
+
+            Console.WriteLine($"[SERVER] Primljen red {sample.RowIndex} " +
+                $"za vozilo {sample.VehicleId} - prenos u toku...");
         }
 
         public void EndSession(string vehicleId)
@@ -31,17 +81,19 @@ namespace Server
             {
                 using (SessionResource sesija = _aktivneSesije[vehicleId])
                 {
-                    Console.WriteLine($"[SERVER] Sesija zavrsena za vozilo: {vehicleId}");
+                    Console.WriteLine($"[SERVER] Zatvaranje sesije za vozilo: {vehicleId}");
                 }
                 _aktivneSesije.Remove(vehicleId);
             }
-            Console.WriteLine($"[SERVER] Prenos zavrsen.");
+
+            Console.WriteLine($"[SERVER] Prenos zavrsen za vozilo: {vehicleId}");
         }
 
         private void ValidateSample(ChargingSample sample)
         {
             if (string.IsNullOrEmpty(sample.Timestamp))
             {
+                ZabeležiOdbijen(sample, "Timestamp je prazan");
                 throw new FaultException<string>(
                     "Neispravan red: Timestamp je prazan.",
                     new FaultReason("Validacija nije prosla"));
@@ -49,6 +101,7 @@ namespace Server
 
             if (sample.VoltageAvg <= 0)
             {
+                ZabeležiOdbijen(sample, "Napon mora biti veci od 0");
                 throw new FaultException<string>(
                     $"Neispravan red {sample.RowIndex}: Napon mora biti veci od 0.",
                     new FaultReason("Validacija nije prosla"));
@@ -56,10 +109,26 @@ namespace Server
 
             if (sample.FrequencyAvg <= 0)
             {
+                ZabeležiOdbijen(sample, "Frekvencija mora biti veca od 0");
                 throw new FaultException<string>(
                     $"Neispravan red {sample.RowIndex}: Frekvencija mora biti veca od 0.",
                     new FaultReason("Validacija nije prosla"));
             }
+        }
+
+        private void ZabeležiOdbijen(ChargingSample sample, string razlog)
+        {
+            string rejectsPath = GetRejectsPath(sample.VehicleId);
+
+            using (StreamWriter writer = new StreamWriter(rejectsPath, append: true))
+            {
+                if (new FileInfo(rejectsPath).Length == 0)
+                    writer.WriteLine("RowIndex,Timestamp,Razlog");
+
+                writer.WriteLine($"{sample.RowIndex},{sample.Timestamp},{razlog}");
+            }
+
+            Console.WriteLine($"[SERVER] Red {sample.RowIndex} odbijen: {razlog}");
         }
     }
 }
