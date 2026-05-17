@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="EnergyAnalyzer.cs" />
     <Compile Include="EVChargingService.cs" />
+    <Compile Include="FrequencyAnalyzer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
