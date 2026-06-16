@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.ServiceModel;
-using Common;
 
 namespace Client
 {
@@ -95,9 +95,22 @@ namespace Client
             finally
             {
                 if (kanal != null)
-                    ((IClientChannel)kanal).Close();
+                {
+                    IClientChannel clientChannel = (IClientChannel)kanal;
+
+                    if (clientChannel.State == CommunicationState.Faulted)
+                        clientChannel.Abort();
+                    else
+                        clientChannel.Close();
+                }
+
                 if (factory != null)
-                    factory.Close();
+                {
+                    if (factory.State == CommunicationState.Faulted)
+                        factory.Abort();
+                    else
+                        factory.Close();
+                }
             }
 
             Console.WriteLine("\n[KLIJENT] Gotovo. Pritisni Enter za izlaz.");
@@ -111,7 +124,7 @@ namespace Client
 
             using (StreamReader reader = new StreamReader(putanja))
             {
-                string header = reader.ReadLine(); 
+                string header = reader.ReadLine();
                 string linija;
 
                 while ((linija = reader.ReadLine()) != null)

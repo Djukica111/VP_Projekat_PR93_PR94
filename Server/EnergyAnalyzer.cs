@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Common;
 using System.Configuration;
-using Common;
 
 namespace Server
 {
     public class EnergyAnalyzer
     {
         private double _kumulativnaEnergija = 0;
-        private double _prethodnaKumulativna = 0;
+        private double? _prethodniRealPowerAvg = null;
         private int _brojRedovaBezRasta = 0;
         private double _overloadPrag;
 
@@ -28,51 +27,42 @@ namespace Server
 
         public void AnalizirajUzorak(ChargingSample sample)
         {
-            // Kumulativna energija — aproksimacija integracijom
             _kumulativnaEnergija += sample.RealPowerAvg;
 
-            // Provjeri stagnaciju
-            double rast = _kumulativnaEnergija - _prethodnaKumulativna;
-
-            if (rast < MINIMALNI_RAST)
+            if (_prethodniRealPowerAvg.HasValue)
             {
-                _brojRedovaBezRasta++;
+                double rast = sample.RealPowerAvg - _prethodniRealPowerAvg.Value;
 
-                if (_brojRedovaBezRasta >= STAGNACIJA_LIMIT)
+                if (rast < MINIMALNI_RAST)
                 {
-                    Publisher.RaiseWarning(
-                        sample.VehicleId,
-                        sample.RowIndex,
-                        "EnergyStallWarning",
-                        $"Energija stagnira vec {_brojRedovaBezRasta} redova. " +
-                        $"Kumulativna vrednost: {_kumulativnaEnergija:F2}",
-                        _kumulativnaEnergija);
+                    _brojRedovaBezRasta++;
+
+                    if (_brojRedovaBezRasta >= STAGNACIJA_LIMIT)
+                    {
+                        Publisher.RaiseWarning(
+                            sample.VehicleId,
+                            sample.RowIndex,
+                            "EnergyStallWarning",
+                            $"Energija stagnira vec {_brojRedovaBezRasta} redova. " +
+                            $"Kumulativna vrednost: {_kumulativnaEnergija:F2}",
+                            _kumulativnaEnergija);
+
+                        _brojRedovaBezRasta = 0;
+                    }
+                }
+                else
+                {
+                    _brojRedovaBezRasta = 0;
                 }
             }
-            else
-            {
-                _brojRedovaBezRasta = 0;
-            }
 
-            _prethodnaKumulativna = _kumulativnaEnergija;
-
-            // Provjeri preopterecenje
-            if (sample.RealPowerMax > _overloadPrag)
-            {
-                Publisher.RaiseWarning(
-                    sample.VehicleId,
-                    sample.RowIndex,
-                    "OverloadWarning",
-                    $"Real Power Max ({sample.RealPowerMax:F2}) " +
-                    $"premasuje prag ({_overloadPrag:F2})",
-                    sample.RealPowerMax);
-            }
+            _prethodniRealPowerAvg = sample.RealPowerAvg;
         }
 
         public void ResetujStanje()
         {
             _kumulativnaEnergija = 0;
-            _prethodnaKumulativna = 0;
+            _prethodniRealPowerAvg = null;
             _brojRedovaBezRasta = 0;
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace Common
 {
@@ -62,5 +61,12 @@ namespace Common
         public double FrequencyAvg { get; set; }
         [DataMember]
         public double FrequencyMax { get; set; }
+
+        public override string ToString()
+        {
+            return $"[Row {RowIndex}] Vehicle: {VehicleId} | Timestamp: {Timestamp} | " +
+                   $"Voltage(Avg): {VoltageAvg:F2} | Current(Avg): {CurrentAvg:F2} | " +
+                   $"RealPower(Avg): {RealPowerAvg:F2} | Frequency(Avg): {FrequencyAvg:F2}";
+        }
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
-using Common;
 
 namespace Server
 {
@@ -69,6 +69,28 @@ namespace Server
 
         public void PushSample(ChargingSample sample)
         {
+            if (sample == null)
+            {
+                throw new FaultException<string>(
+                    "Sample ne sme biti null.",
+                    new FaultReason("Validacija nije prosla"));
+            }
+
+            if (string.IsNullOrWhiteSpace(sample.VehicleId))
+            {
+                throw new FaultException<string>(
+                    "VehicleId ne sme biti prazan.",
+                    new FaultReason("Validacija nije prosla"));
+            }
+
+            if (!_aktivneSesije.ContainsKey(sample.VehicleId))
+            {
+                LogRejected(sample, "Sesija nije otvorena za ovo vozilo.");
+                throw new FaultException<string>(
+                    $"Sesija nije otvorena za vozilo {sample.VehicleId}.",
+                    new FaultReason("Sesija nije pokrenuta"));
+            }
+
             ValidateSample(sample);
 
             if (_aktivneSesije.ContainsKey(sample.VehicleId))

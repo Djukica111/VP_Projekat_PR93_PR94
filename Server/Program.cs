@@ -11,14 +11,26 @@ namespace Server
             TransferEventSubscriber subscriber =
                 new TransferEventSubscriber(servis.Publisher);
 
-            ServiceHost host = new ServiceHost(servis);
-            host.Open();
+            ServiceHost host = null;
 
-            Console.WriteLine("[SERVER] Servis je pokrenut. Cekam klijente...");
-            Console.WriteLine("[SERVER] Pritisni Enter za gasenje.");
-            Console.ReadLine();
+            try
+            {
+                host = new ServiceHost(servis);
+                host.Open();
 
-            host.Close();
+                Console.WriteLine("[SERVER] Servis je pokrenut. Cekam klijente...");
+                Console.WriteLine("[SERVER] Pritisni Enter za gasenje.");
+                Console.ReadLine();
+
+                host.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[SERVER] Greska: {ex.Message}");
+
+                if (host != null)
+                    host.Abort();
+            }
         }
     }
 }

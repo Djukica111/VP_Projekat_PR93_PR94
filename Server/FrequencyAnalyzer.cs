@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Configuration;
-using Common;
 
 namespace Server
 {
