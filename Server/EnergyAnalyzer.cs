@@ -57,6 +57,17 @@ namespace Server
             }
 
             _prethodniRealPowerAvg = sample.RealPowerAvg;
+            
+            if (sample.RealPowerMax > _overloadPrag)
+            {
+                Publisher.RaiseWarning(
+                    sample.VehicleId,
+                    sample.RowIndex,
+                    "OverloadWarning",
+                    $"Real Power Max ({sample.RealPowerMax:F2}) " +
+                    $"premasuje prag ({_overloadPrag:F2})",
+                    sample.RealPowerMax);
+            }
         }
 
         public void ResetujStanje()
