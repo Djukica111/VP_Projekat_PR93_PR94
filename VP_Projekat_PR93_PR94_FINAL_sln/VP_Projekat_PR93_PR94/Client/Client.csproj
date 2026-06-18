@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C5F5EAC3-1729-4B28-B581-CDE27726DFC1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Client</RootNamespace>
+    <AssemblyName>Client</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <Content Include="Data\BMW iX xDrive50\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\BMW iX xDrive50\Waveforms\Waveform_1.csv" />
+    <None Include="Data\BMW iX xDrive50\Waveforms\Waveform_2.csv" />
+    <None Include="Data\BMW iX xDrive50\Waveforms\Waveform_3.csv" />
+    <Content Include="Data\Ford Mustang\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Ford Mustang\Waveforms\Waveform_6.csv" />
+    <Content Include="Data\Hyundai Ioniq 5\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Hyundai Ioniq 5\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Hyundai Ioniq 5\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Hyundai Ioniq 5\Waveforms\Waveform_3.csv" />
+    <Content Include="Data\Hyundai Ioniq Electric\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Hyundai Ioniq Electric\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Hyundai Ioniq Electric\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Hyundai Ioniq Electric\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Hyundai Ioniq Electric\Waveforms\Waveform_4.csv" />
+    <Content Include="Data\Kia Nero\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Kia Nero\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Kia Nero\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Kia Nero\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Kia Nero\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Kia Nero\Waveforms\Waveform_5.csv" />
+    <Content Include="Data\Lexus\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Lexus\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Lexus\Waveforms\Waveform_6.csv" />
+    <Content Include="Data\Mitsubishi Outlander\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_7.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_8.csv" />
+    <None Include="Data\Mitsubishi Outlander\Waveforms\Waveform_9.csv" />
+    <Content Include="Data\Nissan Leaf\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_7.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_8.csv" />
+    <None Include="Data\Nissan Leaf\Waveforms\Waveform_9.csv" />
+    <Content Include="Data\Tesla Model 3\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Tesla Model 3\Waveforms\Waveform_5.csv" />
+    <Content Include="Data\Tesla Model Y\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Tesla Model Y\Waveforms\Waveform_7.csv" />
+    <Content Include="Data\Toyota Prius Prime 2021\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Toyota Prius Prime 2021\Waveforms\Waveform_7.csv" />
+    <Content Include="Data\Volvo XC 40\Charging_Profile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_1.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_2.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_3.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_4.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_5.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_6.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_7.csv" />
+    <None Include="Data\Volvo XC 40\Waveforms\Waveform_8.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{d8d82f08-e0b3-4608-b94f-0d8f4e1df0d7}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
